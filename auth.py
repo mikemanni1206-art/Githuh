@@ -29,12 +29,14 @@ def get_client() -> schwab.client.Client:
             print("Saved token is invalid or expired. Re-authenticating...")
             os.remove(token_path)
 
-    # First-time / re-authentication: browser-based OAuth flow
-    print("\nOpening browser for Schwab login...")
-    print(f"After logging in, you will be redirected to: {Config.CALLBACK_URL}")
-    print("Paste the full redirect URL here when prompted.\n")
+    # First-time / re-authentication: manual OAuth flow (works without a local browser)
+    print("\n--- Schwab OAuth Login ---")
+    print("1. Open the URL below in your browser and log in to Schwab.")
+    print("2. After logging in you will be redirected to a URL starting with:")
+    print(f"   {Config.CALLBACK_URL}")
+    print("3. Copy that full redirect URL and paste it here.\n")
 
-    client = schwab.auth.client_from_login_flow(
+    client = schwab.auth.client_from_manual_flow(
         Config.APP_KEY,
         Config.APP_SECRET,
         Config.CALLBACK_URL,
